@@ -1,0 +1,67 @@
+---
+title: "Strompreis Vergleich"
+author: "Frederik Ziebell"
+date: "14 Januar 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- ============================================
+Packages
+============================================= -->
+```{r}
+library("tidyverse")
+library("readxl")
+library("stringr")
+```
+
+<!-- ============================================
+Data import and processing
+============================================= -->
+```{r}
+# import
+data <-read_csv("data.csv")
+
+# strompreise berechnen 
+data %<>%
+  # preis pro jahr mit 1 jahr vertragslaufzeit
+  mutate(preis_1j_1500kwh = (12*preis_mtl_EUR + 1500*preis_pro_kwh_EUR)*(1-erstjahrbonus_prozent/100)-einmal_bonus_EUR,
+         preis_1j_1800kwh = (12*preis_mtl_EUR + 1800*preis_pro_kwh_EUR)*(1-erstjahrbonus_prozent/100)-einmal_bonus_EUR,
+         preis_1j_2000kwh = (12*preis_mtl_EUR + 2000*preis_pro_kwh_EUR)*(1-erstjahrbonus_prozent/100)-einmal_bonus_EUR
+  ) %>%
+  # preis pro jahr mit 2 jahre vertragslaufzeit
+  mutate(preis_2j_1500kwh = (preis_1j_1500kwh + 12*preis_mtl_EUR + 1500*preis_pro_kwh_EUR)/2,
+         preis_2j_1800kwh = (preis_1j_1800kwh + 12*preis_mtl_EUR + 1800*preis_pro_kwh_EUR)/2,
+         preis_2j_2000kwh = (preis_1j_2000kwh + 12*preis_mtl_EUR + 2000*preis_pro_kwh_EUR)/2
+  ) %>%
+  # preis pro jahr mit 3 jahre vertragslaufzeit
+  mutate(preis_3j_1500kwh = (2*preis_2j_1500kwh + 12*preis_mtl_EUR + 1500*preis_pro_kwh_EUR)/3,
+         preis_3j_1800kwh = (2*preis_2j_1800kwh + 12*preis_mtl_EUR + 1800*preis_pro_kwh_EUR)/3,
+         preis_3j_2000kwh = (2*preis_2j_2000kwh + 12*preis_mtl_EUR + 2000*preis_pro_kwh_EUR)/3)
+
+# tidy data
+data %<>%
+  dplyr::select(tarif, 
+                preis_1j_1500kwh, preis_1j_1800kwh, preis_1j_2000kwh, 
+                preis_2j_1500kwh, preis_2j_1800kwh, preis_2j_2000kwh,
+                preis_3j_1500kwh, preis_3j_1800kwh, preis_3j_2000kwh) %>%
+  gather(typ, preis, -tarif) %>%
+  mutate(jahr=str_split_fixed(typ,"_",3)[,2],
+         verbrauch=str_split_fixed(typ,"_",3)[,3]) %>%
+  dplyr::select(-typ)
+```
+
+<!-- ============================================
+Visualisierung
+============================================= -->
+```{r, fig.width=10, fig.height=5}
+data %>%
+  ggplot(aes(jahr,preis, color=tarif, group=tarif)) +
+  facet_grid(~verbrauch) +
+  geom_point() +
+  geom_line()
+```
+
