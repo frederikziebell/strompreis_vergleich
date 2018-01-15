@@ -23,7 +23,7 @@ Data import and processing
 ============================================= -->
 ```{r}
 # import
-data <-read_csv("data.csv")
+data <-read_csv("data2.csv")
 
 # strompreise berechnen 
 data %<>%
@@ -44,11 +44,14 @@ data %<>%
 
 # tidy data
 data %<>%
-  dplyr::select(tarif, 
+  dplyr::select(anbieter, tarif, 
                 preis_1j_1500kwh, preis_1j_1800kwh, preis_1j_2000kwh, 
                 preis_2j_1500kwh, preis_2j_1800kwh, preis_2j_2000kwh,
                 preis_3j_1500kwh, preis_3j_1800kwh, preis_3j_2000kwh) %>%
-  gather(typ, preis, -tarif) %>%
+  gather(typ, preis, c(preis_1j_1500kwh, preis_1j_1800kwh, preis_1j_2000kwh,
+                       preis_2j_1500kwh, preis_2j_1800kwh, preis_2j_2000kwh,
+                       preis_3j_1500kwh, preis_3j_1800kwh, preis_3j_2000kwh)
+  ) %>%
   mutate(jahr=str_split_fixed(typ,"_",3)[,2],
          verbrauch=str_split_fixed(typ,"_",3)[,3]) %>%
   dplyr::select(-typ)
@@ -58,9 +61,18 @@ data %<>%
 Visualisierung
 ============================================= -->
 ```{r, fig.width=10, fig.height=5}
+# nur enstroga
 data %>%
+  filter(anbieter=="enstroga") %>%
   ggplot(aes(jahr,preis, color=tarif, group=tarif)) +
   facet_grid(~verbrauch) +
+  geom_point() +
+  geom_line()
+
+# andere anbieter
+data %>%
+  ggplot(aes(jahr,preis, color=tarif, group=tarif)) +
+  facet_grid(anbieter~verbrauch) +
   geom_point() +
   geom_line()
 ```
