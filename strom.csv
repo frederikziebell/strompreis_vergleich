@@ -1,0 +1,12 @@
+anbieter,tarif,preis_mtl_EUR,preis_pro_kwh_EUR,einmal_bonus_EUR,erstjahrbonus_prozent
+enstroga,gruen_tarif,7.27,0.2581,0,0
+enstroga,vollstrom_tarif,4.81,0.2638,0,0
+enstroga,einfach_natur,4.65,0.256,0,0
+enstroga,vollstrom_jetzt,9.4,0.2757,100,0
+enstroga,vollstrom_komplett,10.21,0.2718,60,15
+eon,klassik_strom,9.91666666666667,0.2572,130,0
+eon,solar_strom,9.91666666666667,0.2667,130,0
+eon,premium_strom,9.91666666666667,0.2952,0,0
+yellow,strom_plus,25.25,0.2834,0,0
+enbw,natur_max12,10.76,0.2687,80,0
+enbw,relax,9.9,0.2758,0,0

@@ -1,0 +1,16 @@
+anbieter,tarif,preis_mtl_EUR,preis_pro_kwh_EUR,einmal_bonus_EUR,erstjahrbonus_prozent
+vattenfall,easy24_gas,13.90,0.0564,120,0
+vattenfall,easy12_gas,13.90,0.056,172,0
+vattenfall,easy12_gas_standard,13.90,0.0528,0,0
+enbw,bio_erdgas_10,11.36,0.0659,30,0
+enbw,erdgas_online,9.82,0.0546,10,6.6
+enbw,ideal_gas,11.36,0.0603,30,0
+lew,pur_erdgas,10.95,0.0518,130,0
+strogon,voll_gas_plus,7.73,0.0717,30,15
+strogon,voll_gas,7.73,0.0691,0,0
+strogon,gas_fest_plus,13.9,0.0526,60,15
+strogon,gas_flexibel_plus,7.27,0.0511,0,0
+strogon,gas_fest,5.75,0.0533,0,0
+enstroga,mein_gas,7.5,0.0506,0,0
+enstroga,mein_gas_komplett,13.9,0.0579,80,15
+enstroga,flexi_gas,7.47,0.0629,0,0
